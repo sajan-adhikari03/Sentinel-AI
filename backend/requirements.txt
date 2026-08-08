@@ -1,0 +1,27 @@
+# Web Framework
+Flask
+Flask-SQLAlchemy
+Flask-Migrate
+Flask-Bcrypt
+Flask-Login
+python-dotenv
+
+# Database
+pymysql
+
+# Machine Learning
+pandas
+numpy
+scikit-learn
+
+# Computer Vision & OCR
+opencv-python
+easyocr
+Pillow
+
+# PDF Generation
+reportlab
+
+# Utilities
+requests
+validators
