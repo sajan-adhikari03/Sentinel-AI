@@ -37,3 +37,14 @@ Thumbs.db
 # Logs
 # -----------------------------
 *.log
+
+# -----------------------------
+# Flask Instance / Local Database
+# -----------------------------
+
+instance/
+backend/instance/
+
+*.db
+*.sqlite
+*.sqlite3
