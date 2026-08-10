@@ -1,11 +1,10 @@
 from flask import Flask
+from flask_cors import CORS
+from flask_jwt_extended import JWTManager
 
 from config import Config
 from app.extensions import db, migrate
 from app.routes import api
-
-# JWT
-from flask_jwt_extended import JWTManager
 
 # Import models so Flask-Migrate detects them
 from app.models.scan_history import ScanHistory
@@ -16,26 +15,64 @@ app = Flask(__name__)
 
 app.config.from_object(Config)
 
-# JWT configuration
-app.config["JWT_SECRET_KEY"] = "sentinel-super-secret-key-change-this-later"
 
-# Initialize database
-db.init_app(app)
+# ============================================================
+# CORS
+# ============================================================
 
-# Initialize migrations
-migrate.init_app(app, db)
+CORS(
+    app,
+    resources={
+        r"/api/*": {
+            "origins": [
+                "http://localhost:5173",
+                "http://127.0.0.1:5173"
+            ]
+        }
+    }
+)
 
-# Initialize JWT
+
+# ============================================================
+# JWT
+# ============================================================
+
 jwt = JWTManager(app)
 
-# Register API routes
+
+# ============================================================
+# DATABASE
+# ============================================================
+
+db.init_app(app)
+
+
+# ============================================================
+# MIGRATIONS
+# ============================================================
+
+migrate.init_app(app, db)
+
+
+# ============================================================
+# API ROUTES
+# ============================================================
+
 app.register_blueprint(api)
 
+
+# ============================================================
+# HOME
+# ============================================================
 
 @app.route("/")
 def home():
     return "Sentinel AI Backend is Running Successfully!"
 
+
+# ============================================================
+# RUN SERVER
+# ============================================================
 
 if __name__ == "__main__":
     app.run(debug=True)

@@ -2,6 +2,7 @@ from app.extensions import db
 
 
 class ScanHistory(db.Model):
+
     __tablename__ = "scan_history"
 
     id = db.Column(

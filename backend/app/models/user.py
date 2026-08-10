@@ -5,7 +5,10 @@ from werkzeug.security import generate_password_hash, check_password_hash
 class User(db.Model):
     __tablename__ = "users"
 
-    id = db.Column(db.Integer, primary_key=True)
+    id = db.Column(
+        db.Integer,
+        primary_key=True
+    )
 
     username = db.Column(
         db.String(80),
@@ -30,12 +33,34 @@ class User(db.Model):
         nullable=False
     )
 
+    # ========================================================
+    # PASSWORD RESET
+    # ========================================================
+
+    reset_token_hash = db.Column(
+        db.String(255),
+        nullable=True
+    )
+
+    reset_token_expires_at = db.Column(
+        db.DateTime,
+        nullable=True
+    )
+
+    # ========================================================
+    # RELATIONSHIPS
+    # ========================================================
+
     scans = db.relationship(
         "ScanHistory",
         backref="user",
         lazy=True,
         cascade="all, delete-orphan"
     )
+
+    # ========================================================
+    # PASSWORD METHODS
+    # ========================================================
 
     def set_password(self, password):
         self.password_hash = generate_password_hash(password)
@@ -45,6 +70,10 @@ class User(db.Model):
             self.password_hash,
             password
         )
+
+    # ========================================================
+    # REPRESENTATION
+    # ========================================================
 
     def __repr__(self):
         return f"<User {self.username}>"
